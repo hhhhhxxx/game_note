@@ -337,6 +337,12 @@ agent cmd disconnect
 
 
 
+发送消息在agent里面的send_package方法
+
+里面require了skynet.socket，调用socket.
+
+
+
 ### 多次重启socket接收不到消息
 
 ```lua
