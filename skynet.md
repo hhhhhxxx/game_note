@@ -22,6 +22,14 @@ skynet.trash 释放c的内存
 
 skynet.ignoreret() 使skynet.ret失效
 
+skynet.timeout(time, func)  设定一个定时触发函数 func ，在 time * 0.01s 后触发。
+
+
+
+sharetable.loadfile(filename,...)
+
+通过文件加载一个lua表，云风大佬推荐使用api
+
 
 
 ### cluster
@@ -37,7 +45,46 @@ cluster.open(port)
 
 port是个字符串 起个名字监听这个服务
 
+
+
+
+
+
+
 ### snax
+
+
+
+**snax.newservice(name, ...)**
+
+可以把一个服务启动多份。传入服务名和参数，它会返回一个对象，用于和这个启动的服务交互。如果多次调用 newservice ，即使名字相同，也会生成多份服务的实例，它们各自独立，由不同的对象区分。
+
+​	
+
+前一种方式可以看成是启动了一个匿名服务，启动后只能用地址（以及对服务地址的对象封装）与之通讯
+
+对于匿名服务，你无法在别处通过名字得到和它交互的对象。如果你有这个需求，可以把对象的 **.handle** 域通过消息发送给别人。 handle 是一个数字，即 snax 服务的 skynet 服务地址。
+
+这个数字的接收方可以通过 **snax.bind(handle, typename)** 把它转换成服务对象。这里第二个参数需要传入服务的启动名，以用来了解这个服务有哪些远程方法可以供调用。当然，你也可以直接把 **.type** 域和 **.handle** 一起发送过去，而不必在源代码上约定。
+
+
+
+即snax.bind定位到多个snax中确切的一个
+
+
+
+```lua
+--通过obj.post.CMD1
+function accept.CMD1(...) 
+    
+end
+
+--通过obj.req.CMD2调用的时候,触发该回调函数，并返回应答
+function response.CMD2(...) 
+  	
+    return ret
+end
+```
 
 
 
@@ -255,15 +302,15 @@ connection[fd] = { fd,ip} --  判断连接存在的表
 watchdog  cmd:  socket open
 ```
 
-watchdog在SOCKET.open创建agent
+watchdog在**SOCKET.open**创建agent
 
 ```lua
 agent[fd] = skynet.newservice("agent")
 ```
 
+
+
 然后向agent发送**start**消息
-
-
 
 ```lua
 agent cmd: start
