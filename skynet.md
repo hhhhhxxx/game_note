@@ -12,38 +12,67 @@
 
 ### skynet api
 
+```lua
+--自定义消息类型 pack unpack 和dispatch
+skynet.register_protocol 
 
+--通常是接受lua类型的消息
+skynet.dispatch 
 
-skynet.register_protocol 自定义消息类型 pack unpack 和dispatch
+--释放c的内存
+skynet.trash 
 
-skynet.dispatch 通常是接受lua类型的消息
+--使skynet.ret失效
+skynet.ignoreret() 
 
-skynet.trash 释放c的内存
+--设定一个定时触发函数 func ，在 time * 0.01s 后触发。
+skynet.timeout(time, func)  
 
-skynet.ignoreret() 使skynet.ret失效
-
-skynet.timeout(time, func)  设定一个定时触发函数 func ，在 time * 0.01s 后触发。
-
-
-
+--通过文件加载一个lua表，云风大佬推荐使用api
 sharetable.loadfile(filename,...)
 
-通过文件加载一个lua表，云风大佬推荐使用api
+
+--退出skynet进程
+skynet.abort
+
+
+--使用 skynet 内置的 profile 记时而不用系统带的 os.time 是因为 profile 可以剔除阻塞调用的时间，准确统计出当前 coroutine 真正的开销。
+skynet.profile()
+```
+
+
+
+
 
 
 
 ### cluster
 
-cluster.query(node, name) 在远程节点上查询一个名字对应的地址。
-cluster.proxy(node, address) 为远程节点上的服务创建一个本地代理服务。
-cluster.call(node, address, ...) 向一个节点上的一个服务提起一个请求，等待回应。
-cluster.send(node, address, ...) 向一个节点上的一个服务推送一条消息。
 
 
+```lua
+--在远程节点上查询一个名字对应的地址。
+cluster.query(node, name) 
 
+--为远程节点上的服务创建一个本地代理服务。
+cluster.proxy(node, address) 
+
+-- 向一个节点上的一个服务提起一个请求，等待回应。
+cluster.call(node, address, ...)
+
+--向一个节点上的一个服务推送一条消息。
+cluster.send(node, address, ...) 
+
+--port是个字符串 起个名字监听这个服务
 cluster.open(port)
 
-port是个字符串 起个名字监听这个服务
+
+cluster.register(name, address) 在当前节点上为一个服务起一个字符串名字，之后可以用
+```
+
+
+
+
 
 
 

@@ -14,6 +14,19 @@ function rawset(table, index, value)
 
 --设置table的元表
 function setmetatable(table, metatable)
+            
+            
+--把表a1中从下标f到e的value移动到表a2中，位置为a2下标从t开始
+function table.move(a1,f,e,t[,a2])
+                
+--当我们想返回一个表作为传递给函数的多个值的结果时      
+function table.pack(x,y,z,....)     
+--应该注意的是，当我们将值作为参数传递时，会在表中添加一个附加字段n，为表的元素个数
+{n = “number of elements in table”}
+
+-- 解包 start到end的下标                    
+function table.unpack(t,start,end)
+
 ```
 
 
@@ -87,7 +100,7 @@ string.find用于找出字母在字符串中的位置。
 
 
 
-### 魔法字符
+### 魔法字符 模式匹配
 
 %a	字母
 %c	控制字符
@@ -239,11 +252,59 @@ function pcall(f, arg1, ...)
 
 
 
-1. __index：没有
+1. __index：key引用不到的使用调用
 2. __call:  当table名字做为函数名字的形式被调用的时候，会调用call函数。
+
+
 
 
 
 ### io.open
 
 相对路径起点是你可执行文件的地方
+
+
+
+
+
+### os 时间
+
+
+
+```lua
+os.date (  [format   [, time]]  )
+```
+
+　解释：返回 format格式的 关于时间的 字符串或者table。
+
+1. 两个参数都是可以省略的。省略两个参数：按当前系统的设置返回格式化的字符串 ；
+
+2. 只省略第二个参数函数会使用当前时间作为第二个参数 ；第二个参数是数字或者字符串格式的数字；
+
+　　3. 如果format以“！”开头，则按格林尼治时间进行格式化；
+
+　　4. 如果format是一个“*t”，将返一个带year(4位)，month(1-12)， day (1--31)， hour (0-23)， min (0-59)，sec (0-61)，wday (星期几， 星期天为1)，yday (年内天数)和isdst (是否为日光节约时间true/false)的带键名的表;![1687158114993](C:\Users\Administrator\AppData\Roaming\Typora\typora-user-images\1687158114993.png)
+
+　　 5. 如果format不是“*t”，os.date会将日期格式化为一个字符串，具体如下：
+
+
+
+
+
+```lua
+os.time (  [table]  )
+```
+
+解释：如果没有任何参数，会返回当前时间【时间戳形式】，如果参数是table，并且table的域必须有 year, month, day, 可有也可以没有 hour, min, sec, isdst，则会返回table所代表日期的时间，如果未定义后几项，默认时间为当天正午（12:00:00）。
+
+
+
+返回的是秒数
+
+
+
+### 运算符号
+
+
+
+//为地板除 相当于math.floor()
